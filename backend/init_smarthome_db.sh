@@ -52,6 +52,34 @@ CREATE TABLE alerts (
     severity TEXT DEFAULT 'info',
     triggered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Helpful indexes to make searches by device name / location and sensor type fast
+CREATE INDEX IF NOT EXISTS idx_devices_name ON devices(name);
+CREATE INDEX IF NOT EXISTS idx_devices_location ON devices(location);
+CREATE INDEX IF NOT EXISTS idx_sensors_device_type ON sensors(device_id, type);
+CREATE INDEX IF NOT EXISTS idx_sensor_logs_sensor_ts ON sensor_logs(sensor_id, timestamp);
+
+-- Convenience view to make queries easier: joins logs with sensor and device info.
+-- Example: SELECT * FROM device_sensor_logs WHERE device_name = 'Living Room ESP32' AND device_location = 'Living Room';
+CREATE VIEW IF NOT EXISTS device_sensor_logs AS
+SELECT
+    sl.id as log_id,
+    sl.sensor_id,
+    s.type as sensor_type,
+    s.unit as sensor_unit,
+    s.pin as sensor_pin,
+    s.device_id,
+    d.name as device_name,
+    d.mac_address as device_mac,
+    d.ip_address as device_ip,
+    d.location as device_location,
+    sl.value,
+    sl.timestamp,
+    sl.received_at,
+    sl.status
+FROM sensor_logs sl
+JOIN sensors s ON sl.sensor_id = s.id
+JOIN devices d ON s.device_id = d.id;
 EOF
 
 echo "✅ Database schema created successfully!"

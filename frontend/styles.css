@@ -1,0 +1,98 @@
+:root {
+  --bg: #0f1720;
+  --panel: #0b1220;
+  --accent: #8ab4ff;
+  --muted: #9aa7b2;
+  --card: #0d1a26;
+}
+* {
+  box-sizing: border-box;
+  font-family: Inter, system-ui, Segoe UI, Arial;
+}
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #041022, #081829);
+  color: #e6eef6;
+}
+.app {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+header h1 {
+  margin: 0 0 12px 0;
+  color: var(--accent);
+}
+main {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 18px;
+}
+.panel {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 18px;
+  border-radius: 8px;
+}
+#devices {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#devices li {
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.02), transparent);
+  cursor: pointer;
+}
+#devices li:hover {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent);
+}
+.hidden {
+  display: none;
+}
+#sensors {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+#sensors li {
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  cursor: pointer;
+}
+#sensors li:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0;
+}
+#logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+#logs-table th,
+#logs-table td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  text-align: left;
+  font-size: 13px;
+}
+.stats {
+  display: flex;
+  gap: 18px;
+  margin-top: 8px;
+}
+footer {
+  margin-top: 16px;
+  text-align: center;
+  color: var(--muted);
+}

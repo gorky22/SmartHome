@@ -1,0 +1,171 @@
+:root {
+  --bg: #071026;
+  --card: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+  --accent: #8ab4ff;
+}
+* {
+  box-sizing: border-box;
+  font-family: Inter, system-ui, Segoe UI, Arial;
+}
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #041022, #071026);
+  color: #e6eef6;
+}
+.container {
+  max-width: 1100px;
+  margin: 18px auto;
+  padding: 18px;
+}
+header h1 {
+  color: var(--accent);
+  margin: 0;
+}
+/* header row with mobile toggle */
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mobile-toggle {
+  display: none; /* visible on small screens via media query */
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid rgba(138,180,255,0.08);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 20px;
+}
+.container > main {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+.sidebar {
+  width: 300px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+/* Mobile sidebar states — by default closed on very small screens */
+.sidebar.closed {
+  display: none;
+}
+.sidebar.open {
+  display: block;
+}
+.content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 16px;
+  border-radius: 8px;
+}
+.device-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+.device-list li {
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, 0.01);
+  cursor: pointer;
+}
+.device-list li.active {
+  outline: 2px solid rgba(138, 180, 255, 0.14);
+  background: rgba(138, 180, 255, 0.02);
+}
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.area {
+  display: flex;
+  gap: 18px;
+}
+.left {
+  width: 220px;
+}
+.right {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.01);
+  padding: 8px;
+  border-radius: 6px;
+}
+.sensors-list {
+  list-style: none;
+  padding: 0;
+}
+.sensors-list li {
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, 0.01);
+  cursor: pointer;
+}
+.sensors-list li.selected {
+  background: rgba(138, 180, 255, 0.04);
+}
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* make controls and elements easier to interact with on mobile */
+.btn, button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive layout for narrow screens */
+@media (max-width: 720px) {
+  .container { padding: 12px; margin: 12px; }
+  .mobile-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  .container > main { flex-direction: column; }
+  .sidebar { width: 100%; }
+  .content { width: 100%; }
+  .area { flex-direction: column; }
+  .left { width: 100%; }
+  .right { width: 100%; }
+  .controls { flex-direction: column; align-items: stretch; }
+  .controls label { width: 100%; }
+  .controls button { width: 100%; }
+  .stats { flex-direction: column; gap: 6px; }
+  .logs-table th, .logs-table td { font-size: 13px; }
+  .device-list li, .sensors-list li { padding: 12px; font-size: 16px; }
+  header h1 { font-size: 20px; }
+  footer { font-size: 13px; }
+}
+
+/* On very small phones ensure the sidebar is hidden by default and toggled via button */
+@media (max-width: 480px) {
+  .sidebar.closed { display: none; }
+  .sidebar.open { display: block; }
+}
+.stats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+.logs-table th,
+.logs-table td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+footer {
+  margin-top: 12px;
+  text-align: center;
+  color: #9aa7b2;
+}
