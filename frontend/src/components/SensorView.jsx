@@ -81,7 +81,8 @@ export default function SensorView({ device, sensor }) {
         fill: true,
         tension: 0.28, // smoothing
         borderColor: "#8ab4ff",
-        backgroundColor: "linear-gradient(180deg, rgba(138,180,255,0.14), rgba(138,180,255,0.02))",
+        backgroundColor:
+          "linear-gradient(180deg, rgba(138,180,255,0.14), rgba(138,180,255,0.02))",
         pointRadius: 3,
         pointHoverRadius: 5,
         borderWidth: 2,
@@ -174,11 +175,16 @@ export default function SensorView({ device, sensor }) {
             </button>
             <button
               onClick={() => {
-                const chart = chartRef.current?.chartInstance ?? chartRef.current?.instance ?? chartRef.current?.getContext?.()?.chart;
+                const chart =
+                  chartRef.current?.chartInstance ??
+                  chartRef.current?.instance ??
+                  chartRef.current?.getContext?.()?.chart;
                 // Chart.js exposes resetZoom method when plugin is active
                 try {
-                  if (chart && typeof chart.resetZoom === "function") chart.resetZoom();
-                  else if (chartRef.current && chartRef.current.resetZoom) chartRef.current.resetZoom();
+                  if (chart && typeof chart.resetZoom === "function")
+                    chart.resetZoom();
+                  else if (chartRef.current && chartRef.current.resetZoom)
+                    chartRef.current.resetZoom();
                 } catch (e) {
                   console.warn("resetZoom not available", e);
                 }

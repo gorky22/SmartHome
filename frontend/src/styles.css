@@ -69,22 +69,51 @@ header h1 {
     grid-template-columns: 320px 1fr;
     gap: 20px;
   }
-  .chart-wrap { height: 420px !important; }
-  .right { padding: 18px; }
+  .chart-wrap {
+    height: 420px !important;
+  }
+  .right {
+    padding: 18px;
+  }
 }
 
-.chart-wrap { width: 100%; height: 320px; margin-bottom: 10px; }
-.chart-controls { display:flex; gap: 8px; margin-bottom: 12px; flex-wrap:wrap }
-.chart-controls .btn { background: rgba(255,255,255,0.02); color: var(--accent); border: 1px solid rgba(138,180,255,0.06) }
-.chart-controls .btn:hover { background: rgba(138,180,255,0.06) }
+.chart-wrap {
+  width: 100%;
+  height: 320px;
+  margin-bottom: 10px;
+}
+.chart-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.chart-controls .btn {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--accent);
+  border: 1px solid rgba(138, 180, 255, 0.06);
+}
+.chart-controls .btn:hover {
+  background: rgba(138, 180, 255, 0.06);
+}
 
 /* nicer logs table on desktop */
-.logs-table th { text-transform: capitalize; color: rgba(255,255,255,0.6); font-weight: 600 }
-.logs-table td { color: #dfe9f5 }
+.logs-table th {
+  text-transform: capitalize;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+}
+.logs-table td {
+  color: #dfe9f5;
+}
 
 /* increase readability on large screens */
-.device-meta h2 { font-size: 20px }
-.device-meta .meta { color: rgba(255,255,255,0.6) }
+.device-meta h2 {
+  font-size: 20px;
+}
+.device-meta .meta {
+  color: rgba(255, 255, 255, 0.6);
+}
 .device-list {
   list-style: none;
   padding: 0;
