@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DeviceList from "./components/DeviceList";
 import SensorView from "./components/SensorView";
+import { useTranslation } from "./i18n.jsx";
 
 export default function App() {
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -11,6 +12,8 @@ export default function App() {
   useEffect(() => {
     // nothing special now
   }, []);
+
+  const { t, lang, setLang, available } = useTranslation();
 
   return (
     <div className="container">
@@ -23,7 +26,20 @@ export default function App() {
           >
             ☰
           </button>
-          <h1>SmartHome Dashboard</h1>
+          <h1>{t("title")}</h1>
+          <div style={{ marginLeft: "auto" }}>
+            <select
+              value={lang}
+              onChange={(e) => setLang(e.target.value)}
+              aria-label="Select language"
+            >
+              {available.map((l) => (
+                <option key={l} value={l}>
+                  {l.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </header>
       <main>
@@ -40,7 +56,7 @@ export default function App() {
         </aside>
         <section className="content">
           {!selectedDevice ? (
-            <div className="hero">Select a device to view sensors and data</div>
+            <div className="hero">{t("selectDevice")}</div>
           ) : (
             <div>
               <div className="device-meta">
@@ -52,7 +68,7 @@ export default function App() {
               </div>
               <div className="area">
                 <div className="left">
-                  <h3>Sensors</h3>
+                  <h3>{t("sensors")}</h3>
                   <ul className="sensors-list">
                     {/* load sensors using SensorList inside DeviceList — simpler: fetch sensors on select */}
                     <DeviceSensors
@@ -68,9 +84,7 @@ export default function App() {
                 </div>
                 <div className="right">
                   {!selectedSensor ? (
-                    <div className="placeholder">
-                      Choose a sensor to see logs & chart
-                    </div>
+                    <div className="placeholder">{t("chooseSensor")}</div>
                   ) : (
                     <SensorView
                       device={selectedDevice}

@@ -19,7 +19,14 @@ ChartJS.register(
   Legend
 );
 
+// dynamic import / plugin registration for zoom
+import zoomPlugin from "chartjs-plugin-zoom";
+ChartJS.register(zoomPlugin);
+
+import { useTranslation } from "../i18n.jsx";
+
 export default function SensorView({ device, sensor }) {
+  const { t } = useTranslation();
   const [logs, setLogs] = useState([]);
   const [stats, setStats] = useState({
     count: 0,
@@ -30,6 +37,11 @@ export default function SensorView({ device, sensor }) {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [loading, setLoading] = useState(false);
+  const chartRef = useRef(null);
+
+  // zoom/pan UI state
+  const [zoomEnabled, setZoomEnabled] = useState(true);
+  const [panEnabled, setPanEnabled] = useState(true);
 
   useEffect(() => {
     fetchAll();
@@ -67,17 +79,52 @@ export default function SensorView({ device, sensor }) {
         label: sensor.type,
         data: logs.map((l) => l.value),
         fill: true,
+        tension: 0.28, // smoothing
         borderColor: "#8ab4ff",
-        backgroundColor: "rgba(138,180,255,0.08)",
+        backgroundColor: "linear-gradient(180deg, rgba(138,180,255,0.14), rgba(138,180,255,0.02))",
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        borderWidth: 2,
       },
     ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        display: true,
+        ticks: { maxRotation: 0 },
+      },
+      y: {
+        display: true,
+        beginAtZero: false,
+      },
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        mode: "index",
+        intersect: false,
+      },
+      zoom: {
+        pan: { enabled: panEnabled, mode: "x", modifierKey: "ctrl" },
+        zoom: {
+          wheel: { enabled: zoomEnabled },
+          pinch: { enabled: zoomEnabled },
+          mode: "x",
+        },
+      },
+    },
+    animation: { duration: 200 },
   };
 
   return (
     <div className="sensor-view">
       <div className="controls">
         <label>
-          From{" "}
+          {t("from")}{" "}
           <input
             type="datetime-local"
             value={start}
@@ -85,29 +132,61 @@ export default function SensorView({ device, sensor }) {
           />
         </label>
         <label>
-          To{" "}
+          {t("to")}{" "}
           <input
             type="datetime-local"
             value={end}
             onChange={(e) => setEnd(e.target.value)}
           />
         </label>
-        <button onClick={fetchAll}>Refresh</button>
+        <button onClick={fetchAll}>{t("refresh")}</button>
       </div>
 
       <div className="stats">
-        <div>Count: {stats.count}</div>
-        <div>Avg: {stats.avg ? Number(stats.avg).toFixed(3) : "-"}</div>
-        <div>Min: {stats.min ?? "-"}</div>
-        <div>Max: {stats.max ?? "-"}</div>
+        <div>
+          {t("count")}: {stats.count}
+        </div>
+        <div>
+          {t("avg")}: {stats.avg ? Number(stats.avg).toFixed(3) : "-"}
+        </div>
+        <div>
+          {t("min")}: {stats.min ?? "-"}
+        </div>
+        <div>
+          {t("max")}: {stats.max ?? "-"}
+        </div>
       </div>
 
       {loading ? (
-        <div>Loading...</div>
+        <div>{t("loading")}</div>
       ) : (
         <>
-          <div style={{ height: 240 }}>
-            <Line data={data} />
+          <div className="chart-wrap" style={{ height: 320 }}>
+            <Line ref={chartRef} data={data} options={options} />
+          </div>
+
+          <div className="chart-controls">
+            <button onClick={() => setZoomEnabled((v) => !v)} className="btn">
+              {zoomEnabled ? `🔍 ${t("zoomOn")}` : `🔍 ${t("zoomOff")}`}
+            </button>
+            <button onClick={() => setPanEnabled((v) => !v)} className="btn">
+              {panEnabled ? `🖐️ ${t("panOn")}` : `🖐️ ${t("panOff")}`}
+            </button>
+            <button
+              onClick={() => {
+                const chart = chartRef.current?.chartInstance ?? chartRef.current?.instance ?? chartRef.current?.getContext?.()?.chart;
+                // Chart.js exposes resetZoom method when plugin is active
+                try {
+                  if (chart && typeof chart.resetZoom === "function") chart.resetZoom();
+                  else if (chartRef.current && chartRef.current.resetZoom) chartRef.current.resetZoom();
+                } catch (e) {
+                  console.warn("resetZoom not available", e);
+                }
+              }}
+              className="btn"
+            >
+              {t("resetZoom")}
+            </button>
           </div>
 
           <table className="logs-table">

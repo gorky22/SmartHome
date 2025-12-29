@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 
+import { useTranslation } from "../i18n.jsx";
+
 export default function DeviceList({ onSelect, selected }) {
+  const { t } = useTranslation();
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -25,12 +28,12 @@ export default function DeviceList({ onSelect, selected }) {
   return (
     <div>
       <div className="list-header">
-        <span>Devices</span>
+        <span>{t("devices")}</span>
         <button onClick={load} title="Reload">
           ⟳
         </button>
       </div>
-      {loading && <div>Loading...</div>}
+      {loading && <div>{t("loading")}</div>}
       <ul className="device-list">
         {devices.map((d) => (
           <li
